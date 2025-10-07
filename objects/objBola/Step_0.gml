@@ -142,10 +142,38 @@ else{
 			instance_destroy(blocoAcertado)
 			//Como acertamos na esquerda, agora iremos para direita
 			direcaoHorizontal = 1
+		}
+			//Colisão na direita
+		if place_meeting(x + velocidade, y, objBloco){
+				//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele
+				blocoAcertado = instance_place(x + velocidade, y, objBloco)
+				//Agora destroimos
+				instance_destroy(blocoAcertado)
+				//Como acertamos na direita, agora iremos para esquerda
+				direcaoHorizontal = - 1
+		}
+		
+		//Colisão em cima
+		if place_meeting(x, y - velocidade, objBloco){
+				//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele
+				blocoAcertado = instance_place(x, y - velocidade , objBloco)
+				//Agora destroimos
+				instance_destroy(blocoAcertado)
+				//Como acertamos em cima, agora iremos para baixo
+				direcaoVertical = 1
+		}
+		
+		//Colisão em baixo
+		if place_meeting(x, y + velocidade, objBloco){
+				//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele
+				blocoAcertado = instance_place(x, y + velocidade , objBloco)
+				//Agora destroimos
+				instance_destroy(blocoAcertado)
+				//Como acertamos em baixo, agora iremos para cima 
+				direcaoVertical = - 1
+		}		
 }
 
-	//Colisão na direita
-	if place_meeting(x)
 	
 //No final, some as direções com as  suas recepitivas variáveis vezes a velocidade
 //x soma com a direções horizontal
