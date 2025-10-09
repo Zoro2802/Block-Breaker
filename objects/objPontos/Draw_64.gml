@@ -82,9 +82,67 @@ Para finalizar, vamos colocar para aparecer mais zeros na frete
 if global.pontos < 10{
 	mensagem = "0000" + string(global.pontos)
 }
+else if global.pontos < 100{
+	mensagem = "000" + string(global.pontos)
+}
+else if global.pontos < 1000{
+	mensagem = "00" + string(global.pontos)
+}
+else if global.pntos < 10000{
+	mensagem = "0" + string(global.pontos)
+}
+else{
+	mensagem = string(global.pontos)
+}
+draw_set_font(fntPontos)
 
+/*
+E agora desenhamos na tela, também colocando para ela ir para o meio da tela
+Mas, vamos perceber que o texto não está no meio, pois a horientação normal
+é na esquerda
+Para trocarmos a direção usaremos a função draw_set_hlingn():
+
+Para definir a centralização, usaremos as funções:
+deaw_set_halign():
+function draw_set_halign(halign: Constant.HAlign) ->
+Undefined
+Thins function is used to align text along the horizontal axis and changing the horizontal alingnment will chage the position and direction in whinch all further text is drawn with the default value being fa_left.
+halingn Horinzontal alignment.
+
+tradução:
+Função draw_set_halign(halign: Constante. alinhamento horizontal) retorno vazio ou indefinido
+Esta função é usada pra alinhar o texto no eixo horizontal e mudar -
+- o alinhamento horizontal e irá mudar a posição e a direção em tudos -
+- os texto desenhados, com o padrão sendo iniciar pela esquerda (fa_left)
+halign Alinhamento horizontal
+Aqui as possiveis variáveis são:
+fa_left: Para a esquerda
+fa_center: Para o centro
+fa_right: Para a direita
+No caso iremos usar a fa_center
+
+
+draw_set_valign():
+function draw_set_valign(valign: Constant.VAlign) -> Undefined
+This function is used to align text along the vertical axis and
+- changing the vertical alignment will change the position and -
+- direction in which all further text is drawn, with the default -
+- value being fa_top.
+valign Vertical alignment.
+
+Função draw_set_valign(valign: Constante. alinhamnto vertical) -
+- retorno vazio ou indefinido
+Esta função é usada pra alinhar o texto no eixo vertical e mudar -
+- o alinhamento vertical e irá mudar a posição e a direção em todos -
+- os texto desenhados, com o padrão sendo iniciar pelo topo
+valign Alinhamento vertical
+Aqui as possiveis variáveis são:
+fa_top: Para o topo
+fa_middle: Para o meio
+fa_bottom: Para baixo
+No caso iremos usar a fa_top, então não necessáriamente teremos que 
+- utilizar esta função, mas já fica de ensinamento
 */
-mensagem = string(global.pontos)
-
-//E agora desenhamos na tela
-draw_text(x,y,mensagem)
+draw_set_halign(fa_center)
+draw_set_valign(fa_top)
+draw_text(room_width / 2,y,mensagem)
