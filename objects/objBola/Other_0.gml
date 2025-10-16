@@ -11,10 +11,21 @@ Então, vamos configurar 4 coisa
 4º Criar uma nova bolinha caso ainda tenha vida
 */
 
+//Agora, caso a quantidade de bolas seja moir que 0, iremos apenas
+//Fazer a animação
+
+//E caso a quantidade seja maior que zero, não faremos nada
+global.quantBolas--
+instance_destroy()
+instance_create_layer(x, room_height,"Instances",objMorte)
+
+if global.quantBolas > 0{
+	exit
+}
 
 //Primeiro, tiramos uma vida
 global.vidas--
-
+global.isStart = false
 //Segundo, criar uma animação de morte
 //Só que, para isto, criaremos um novo objeto chamado objMorte
 //E aprendemos como criar novas instancias dentro do código
@@ -76,4 +87,17 @@ E o último passo, recriar a bolinha encima do player
 */
 
 instance_create_layer(objPlayer.x, objPlayer.y - 10, "Instances", objBola)
-isStart = false
+
+/*
+Percebemos que, quando qualquer bolinha conta como uma vida a menos
+Mesmo ainda tendo uma bolinha ou mais na tela sobrando
+Então o que faremos?
+Vcs se lembram do break?
+Para quem não se lembra, o break sai do laço de repetição quando aparecia
+Por exemblo, quando um número fosse divisil por i, ele sai do laço de repetição
+Independete de que aconteceu antes, agora, nós iremos usar algo parecido
+Que no caso é o exist
+O exit sai do código do evento assim que é chamado
+No nosso caso, iremos criar o contador de bolinhas e, assim que a última
+Bolinha sair, aí sim mexeremos na vida
+*/
