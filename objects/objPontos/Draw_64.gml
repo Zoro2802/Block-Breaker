@@ -88,7 +88,7 @@ else if global.pontos < 100{
 else if global.pontos < 1000{
 	mensagem = "00" + string(global.pontos)
 }
-else if global.pntos < 10000{
+else if global.pontos < 10000{
 	mensagem = "0" + string(global.pontos)
 }
 else{
