@@ -1,3 +1,7 @@
+if global.isFim{
+	exit
+}
+
 /*
 Se você deixar o mouse encima da função, 
 ele mostra as parametros, o retorno da função, e a explicação de cada um
