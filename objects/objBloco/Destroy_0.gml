@@ -18,3 +18,8 @@ global.quantBlocos--
 if tipoBloco == 15{
 	instance_create_layer(x, y, "Instances", objBola)
 }
+
+//Caso o bloco seja de bola
+if tipoBloco == 16 and global.vidas < 3{
+	instance_create_layer(x, y, "Instances", objVidaColetavel)
+}
