@@ -71,3 +71,7 @@ if ! variable_global_exists("quantBolas"){
 else{
 	global.quantBolas++
 }
+
+//Local para armazenar o angulo que a bola vai se mover
+armazenarAnguloVertical = 1
+armazenarAnguloHorizontal = 1

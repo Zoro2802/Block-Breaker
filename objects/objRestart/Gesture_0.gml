@@ -28,10 +28,13 @@ global.quantBlocos = 0
 
 //Não há bolas criadas
 global.quantBolas = 0
-
+//O "id" do objVida começa zerado
 global.quantVidas = 0
 
-//O "id" do objVida começa zerado
+//Começa o jogo com 3 vidas
 global.vidas = 3
+
+//Salva o jogo
+salvarJogo()
 
 room_restart()

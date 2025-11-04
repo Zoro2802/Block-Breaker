@@ -22,5 +22,5 @@ if indentificador >= global.vidas{
 }
 else{
 	
-	sprite_index = sprBolas
+	sprite_index = sprBolavida
 }

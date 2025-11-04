@@ -25,7 +25,7 @@ Então se o jogo não começou, seguimos o player
 if ! global.isStart{
 	//Seguindo o player
 	x = objPlayer.x
-	y = objPlayer.y - 10
+	y = objPlayer.y - 20
 	//E agora, caso apertemos para cima, a bola deve se mover e alterar o isStart para true
 	if keyboard_check(vk_up) or keyboard_check(ord("W")) or keyboard_check(vk_space){
 		//Vai para cima
@@ -75,24 +75,103 @@ else{
 	//Ou seja, a esquerda e a direita
 	//Colisão na esquerda
 	//**Usaremos o objetos colisão para testar as colisões mais facilmente
-	if place_meeting(x - velocidade, y, objColisao){
-		direcaoHorizontal = 1
-	}
-	
-	//Colisão direta
-	if place_meeting(x + velocidade, y, objColisao){
-		direcaoHorizontal = -1
-	}
 	
 	//Colisão encima
 	if place_meeting(x, y - velocidade, objColisao){
-		direcaoVertical = 1 
+			/*
+			Antes de reber o valor armazenado, precisamos verificar se ele é negativo,
+			se for, vamos recebe-lo ao contrário, ou seja, multiplicado por -1, se for positivo
+			recebe-lo normalmente
+			*/
+		
+			//se for
+			if sign(armazenarAnguloVertical) == -1{
+				//Recebe ao contrário
+				direcaoVertical = armazenarAnguloVertical * -1
+			}
+			//Se não for
+			else{
+				//Recebe normal
+				direcaoVertical = armazenarAnguloVertical
+		
+			}
+		
+			//Verificamos se é negativo por que o negativo faz subir	 
 	}
+	
+	//Colisão na esquerda
+	if place_meeting(x - velocidade, y, objColisao){
+		/*
+		Na esquerda, verticamos novamente se é negativo, pois na horizontal, o negativo
+		Faz ir para esquerda, se for, recebe ao contrário, se não for, recebe normal
+		*/
+		//Se for
+		if sign(armazenarAnguloHorizontal) == - 1{
+			//Recebe ao contrário
+			direcaoHorizontal = armazenarAnguloHorizontal * -1
+		}
+		//Se não for
+		else{
+			//Recebe normal
+			direcaoHorizontal = armazenarAnguloHorizontal
+		}
+	//Colisão direta
+	if place_meeting(x + velocidade, y, objColisao){
+		/*
+		Na direita, verificamos se é positivo, pois na horizontal, o positivo
+		Faz ir para direita, se for, recebe ao contrário, se não for, recebe normal
+		*/
+			//se for
+		if sign(armazenarAnguloHorizontal) == 1{
+			//Recebe ao contrário
+			direcaoHorizontal = armazenarAnguloHorizontal * -1
+		}
+		//Se não for
+		else{
+			//Recebe normal
+			direcaoHorizontal = armazenarAnguloHorizontal
+		
+		}
+	} 
 	
 	//Agora iremos fazer a interação com o player
 	if place_meeting(x, y + velocidade, objPlayer){
+		//direcaoVertical = -1
+	
+	//Vamos fazer o calculo da direção de onde a bola deve ir
+	
+	/*
+	Vamos as seguintes condições
+	O x da bola e do player, são originados diretamente no meio, então, para calcularmos
+	as distancias, fazer a subtação do x da bola parao x do player
+	*/
+	distancia=x - objPlayer.x
+	
+	direcaoHorizontal = 0.2 * sign(distancia)                                                                               
+	direcaoVertical = -1.8
+	if distancia < 20 and distancia > -20{
+		
+		direcaoHorizontal = 0.5 * sign(distancia)
+		direcaoVertical = -1.5
+	}
+	else if distancia < 40 and distancia > -40{
+		direcaoHorizontal = 1
 		direcaoVertical = -1
 	}
+	else if distancia < 60 and distancia > -60{
+		direcaoHorizontal = 1.5
+		direcaoVertical = 0.5
+	}
+	else{
+		direcaoHorizontal = 1.5 * sign(distancia)
+		direcaoVertical = - 0.5
+	}
+	
+	//Recebe o ângulo calculado
+	armazenarAnguloHorizontal = direcaoHorizontal
+	armazenarAnguloVertical = direcaoVertical
+
+}
 	//Agora vamos começar as colisões com os blocos
 	//Primeiro vamos checar as direção de onde ocorrerá a colisão
 	//Para isto usaremos qual função? Muito bem, place_meeting()
@@ -140,24 +219,6 @@ else{
 		Ou seja, iremos primeiro checar se ouve uma colisão, se houver, iremos receber o id da instancia
 		e depois destruilá 
 		*/
-		if place_meeting(x - velocidade, y, objBloco){
-			//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele 
-			blocoAcertado = instance_place(x - velocidade, y, objBloco)
-			//Agora destroimos 
-			instance_destroy(blocoAcertado)
-			//Como acertamos na esquerda, agora iremos para direita
-			direcaoHorizontal = 1
-		}
-			//Colisão na direita
-		if place_meeting(x + velocidade, y, objBloco){
-				//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele
-				blocoAcertado = instance_place(x + velocidade, y, objBloco)
-				//Agora destroimos
-				instance_destroy(blocoAcertado)
-				//Como acertamos na direita, agora iremos para esquerda
-				direcaoHorizontal = - 1
-		}
-		
 		//Colisão em cima
 		if place_meeting(x, y - velocidade, objBloco){
 				//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele
@@ -165,19 +226,106 @@ else{
 				//Agora destroimos
 				instance_destroy(blocoAcertado)
 				//Como acertamos em cima, agora iremos para baixo
-				direcaoVertical = 1
+				//Verifica se o angulo é negativo, pois o negativo na vertical faz ir para cima
+				//Se for, recebe o valor vezes -1, se não for, recebe o valor normal
+				if sign(armazenarAnguloVertical) == -1{
+					direcaoVertical = armazenarAnguloVertical * -1
+				}
+				else{
+					direcaoVertical = armazenarAnguloVertical
+				}				
 		}
-		
-		//Colisão em baixo
+			//Colisão em baixo
 		if place_meeting(x, y + velocidade, objBloco){
 				//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele
 				blocoAcertado = instance_place(x, y + velocidade , objBloco)
 				//Agora destroimos
 				instance_destroy(blocoAcertado)
 				//Como acertamos em baixo, agora iremos para cima 
-				direcaoVertical = - 1
+				/*
+				Verificamos se o valor armazenado é positivo, pois na vertical o positivo faz descer, se for, recebmos o valor vezes -1
+				Se não for, recebemos o valor normal
+				*/
+				
+				if sign(armazenarAnguloVertical) == 1{
+					direcaoVertical = armazenarAnguloVertical * -1
+				}
+				else{
+					direcaoVertical = armazenarAnguloVertical
+				}
 		}		
-}
+
+		if place_meeting(x - velocidade, y, objBloco){
+			//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele 
+			blocoAcertado = instance_place(x - velocidade, y, objBloco)
+			//Agora destroimos 
+			instance_destroy(blocoAcertado)
+			//Como acertamos na esquerda, agora iremos para direita
+			 /*
+			 Aqui devemos verificar se o valor armazenado é negativo, pois na horizontal
+			 O negativo faz ir para esquerda, se for receber, recebemos o valor ao contrário
+			 Se não, recebemos o valor normal
+			 */
+			 
+			 //Se for verdade
+			 if sign(armazenarAnguloHorizontal) == -1{
+				 //Recebe ao contrário
+				 direcaoHorizontal = armazenarAnguloHorizontal * -1
+			 }
+			 //Se não for
+			 else{
+				 //Recebe normal
+				 direcaoHorizontal = armazenarAnguloHorizontal
+			 }
+		}
+		
+			//Colisão na direita
+		if place_meeting(x + velocidade, y, objBloco){
+				//Agora criamos uma variável do bloco que a bolinha acertou e destroi ele
+				blocoAcertado = instance_place(x + velocidade, y, objBloco)
+				//Agora destroimos
+				instance_destroy(blocoAcertado)
+				//Como acertamos na direita, agora iremos para esquerda
+				 /*
+			 Aqui devemos verificar se o valor armazenado é positivo, pois na horizontal
+			 O negativo faz ir para esquerda, se for receber, recebemos o valor ao contrário
+			 Se não, recebemos o valor normal
+			 */
+			 
+			 //Se for verdade
+			 if sign(armazenarAnguloHorizontal) == 1{
+				 //Recebe ao contrário
+				 direcaoHorizontal = armazenarAnguloHorizontal * -1
+			 }
+			 //Se não for
+			 else{
+				 //Recebe normal
+				 direcaoHorizontal = armazenarAnguloHorizontal
+		}
+	}		
+		
+		/*
+		Antes de reber o valor armazenado, precisamos verificar se ele é negativo,
+		se for, vamos recebe-lo ao contrário, ou seja, multiplicado por -1, se for positivo
+		recebe-lo normalmente
+		*/
+		
+		//se for
+		if sign(armazenarAnguloVertical) == -1{
+			//Recebe ao contrário
+			direcaoVertical = armazenarAnguloVertical * -1
+		}
+		//Se não for
+		else{
+			//Recebe normal
+			direcaoVertical = armazenarAnguloVertical
+		
+		}
+		
+		//Verificamos se é negativo por que o negativo faz subir
+	}
+		
+	
 
 	
 //No final, some as direções com as  suas recepitivas variáveis vezes a velocidade
@@ -186,3 +334,4 @@ x += direcaoHorizontal * velocidade
 
 //y soma com a direção vertical
 y += direcaoVertical * velocidade
+}
